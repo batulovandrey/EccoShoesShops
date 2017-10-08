@@ -1,5 +1,8 @@
 package com.github.batulovandrey.eccoshoesshops.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -9,7 +12,9 @@ import com.google.common.base.Objects;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ShopItem {
+public class ShopItem implements Parcelable {
+
+    public static final ClassCreator CREATOR = new ClassCreator();
 
     @JsonProperty("name")
     private String mName;
@@ -36,6 +41,17 @@ public class ShopItem {
     private double mLatitude;
 
     public ShopItem() {
+    }
+
+    protected ShopItem(Parcel in) {
+        mName = in.readString();
+        mTown = in.readString();
+        mAddress = in.readString();
+        mMetro = in.readString();
+        mPhone = in.readString();
+        mWorkTime = in.readString();
+        mLongitude = in.readDouble();
+        mLatitude = in.readDouble();
     }
 
     public String getName() {
@@ -102,5 +118,34 @@ public class ShopItem {
                 .add("mLongitude", mLongitude)
                 .add("mLatitude", mLatitude)
                 .toString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mName);
+        parcel.writeString(mTown);
+        parcel.writeString(mAddress);
+        parcel.writeString(mMetro);
+        parcel.writeString(mPhone);
+        parcel.writeString(mWorkTime);
+        parcel.writeDouble(mLongitude);
+        parcel.writeDouble(mLatitude);
+    }
+
+    private static final class ClassCreator implements Creator<ShopItem> {
+        @Override
+        public ShopItem createFromParcel(Parcel in) {
+            return new ShopItem(in);
+        }
+
+        @Override
+        public ShopItem[] newArray(int size) {
+            return new ShopItem[size];
+        }
     }
 }

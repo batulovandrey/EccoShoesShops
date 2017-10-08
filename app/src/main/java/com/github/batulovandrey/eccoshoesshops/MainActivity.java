@@ -1,7 +1,9 @@
 package com.github.batulovandrey.eccoshoesshops;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.batulovandrey.eccoshoesshops.bean.BaseResponse;
@@ -13,8 +15,9 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ShopsFragment.OnShopItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +49,24 @@ public class MainActivity extends AppCompatActivity {
                     for (ShopItem item : baseResponse.getShops())
                         System.out.println(item);
                     // TODO: 06.10.2017 throw into fragment
+                    showShopFragment(baseResponse.getShops());
                 } else {
                     System.out.println("it was not successful");
                     // TODO: 06.10.2017 handle error
                 }
             }
         });
+    }
+
+    private void showShopFragment(List<ShopItem> shops) {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.items_container,
+                ShopsFragment.newInstance(shops)).commit();
+    }
+
+    @Override
+    public void onFragmentInteraction(ShopItem item) {
+        // TODO: 08.10.2017 show shop on map
+        Toast.makeText(this, "coordinates: " + item.getLatitude() + " " + item.getLongitude(), Toast.LENGTH_LONG).show();
     }
 }
