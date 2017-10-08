@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ShopsFragment extends Fragment implements OnShopItemClickListener {
 
-    private static final String ARG_SHOPS = "shops";
+    private static final String EXTRA_SHOPS  = "shops";
 
     private List<ShopItem> mShops;
     private ShopItemAdapter mAdapter;
@@ -32,7 +32,7 @@ public class ShopsFragment extends Fragment implements OnShopItemClickListener {
     public static ShopsFragment newInstance(List<ShopItem> shops) {
         ShopsFragment fragment = new ShopsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_SHOPS, (ArrayList<? extends Parcelable>) shops);
+        args.putParcelableArrayList(EXTRA_SHOPS, (ArrayList<? extends Parcelable>) shops);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +41,7 @@ public class ShopsFragment extends Fragment implements OnShopItemClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mShops = getArguments().getParcelableArrayList(ARG_SHOPS);
+            mShops = getArguments().getParcelableArrayList(EXTRA_SHOPS);
             mAdapter = new ShopItemAdapter(mShops, this);
         }
     }

@@ -1,9 +1,8 @@
 package com.github.batulovandrey.eccoshoesshops;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.batulovandrey.eccoshoesshops.bean.BaseResponse;
@@ -24,6 +23,14 @@ public class MainActivity extends AppCompatActivity implements ShopsFragment.OnS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getData();
+    }
+
+    @Override
+    public void onFragmentInteraction(ShopItem item) {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .replace(R.id.map_container, MapFragment.newInstance(item.getLatitude(), item.getLongitude()))
+                .commit();
     }
 
     private void getData() {
@@ -62,11 +69,5 @@ public class MainActivity extends AppCompatActivity implements ShopsFragment.OnS
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.items_container,
                 ShopsFragment.newInstance(shops)).commit();
-    }
-
-    @Override
-    public void onFragmentInteraction(ShopItem item) {
-        // TODO: 08.10.2017 show shop on map
-        Toast.makeText(this, "coordinates: " + item.getLatitude() + " " + item.getLongitude(), Toast.LENGTH_LONG).show();
     }
 }
